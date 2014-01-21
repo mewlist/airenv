@@ -20,4 +20,25 @@ describe Airenv::Sdk do
 
     its(:simple_version) { should == "4.5" }
   end
+
+  describe '#parse_version_id' do
+    context 'given build number' do
+      before do
+        subject.description = description
+        subject.parse_version_id("4.5-b1234")
+      end
+
+      its(:simple_version) { should == "4.5" }
+      its("description.build") { should == 1234 }
+    end
+
+    context 'not given build number' do
+      before do
+        subject.parse_version_id("4.6")
+      end
+
+      its(:simple_version) { should == "4.6" }
+      its("description.build") { should be_nil }
+    end
+  end
 end
