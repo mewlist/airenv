@@ -1,5 +1,5 @@
-require "airenv/version"
-
 module Airenv
-  # Your code goes here...
 end
+
+require "airenv/version"
+require 'airenv/cli'
