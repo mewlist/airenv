@@ -1,4 +1,5 @@
 require 'rexml/document'
+require 'digest/md5'
 
 class Airenv::SdkDescription
   attr_accessor :name
@@ -15,5 +16,13 @@ class Airenv::SdkDescription
 
   def parse(xml)
     REXML::Document.new xml
+  end
+
+  def id
+    "#{version}-b#{build}"
+  end
+
+  def digest
+    Digest::MD5.digest(id)
   end
 end

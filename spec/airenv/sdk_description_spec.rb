@@ -33,4 +33,28 @@ describe Airenv::SdkDescription do
     its(:version) { should == "4.5.6" }
     its(:build) { should == 5678 }
   end
+
+  describe '#digest' do
+    let(:another) { Airenv::SdkDescription.new }
+    before do
+      subject.name = "foo"
+      subject.version = "bar"
+      subject.build = 3141
+
+      another.name = "hoge"
+      another.version = "fuga"
+      another.build = 5926
+    end
+    its(:digest) { should_not == another.digest }
+  end
+
+  describe '#id' do
+    before do
+      subject.name = "AIR 4.5.6"
+      subject.version = "4.5.6"
+      subject.build = 3141
+    end
+
+    its(:id) { should == "4.5.6-b3141" }
+  end
 end
