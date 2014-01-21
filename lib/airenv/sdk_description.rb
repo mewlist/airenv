@@ -6,6 +6,12 @@ class Airenv::SdkDescription
   attr_accessor :version
   attr_accessor :build
 
+  def initialize(name=nil, version=nil, build=nil)
+    self.name = name
+    self.version = version
+    self.build = build
+  end
+
   def load(xml)
     @doc = parse(xml)
     root = @doc.elements['air-sdk-description']
