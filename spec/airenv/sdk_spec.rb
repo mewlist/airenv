@@ -41,4 +41,20 @@ describe Airenv::Sdk do
       its("description.build") { should be_nil }
     end
   end
+
+  describe '#package_name' do
+    before do
+      subject.description = description
+    end
+
+    its(:package_name) { should == "AIRSDK_4.5.6-b5678" }
+  end
+
+  describe '#simple_name' do
+    before do
+      subject.description = description
+    end
+
+    its(:simple_name) { should == "AIRSDK_4.5" }
+  end
 end

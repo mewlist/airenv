@@ -1,4 +1,5 @@
 require 'active_support/core_ext'
+require 'progressbar'
 
 class Airenv::Sdk
 
@@ -20,5 +21,19 @@ class Airenv::Sdk
 
   def simple_version
     description.version.split('.')[0..1].join('.')
+  end
+
+  def package_name
+    "AIRSDK_#{description.id}"
+  end
+
+  def simple_name
+    "AIRSDK_#{simple_version}"
+  end
+
+  def download
+    Airenv::Downloader.new(package_uri, simple_name).start do |downloader|
+      description = downloader.description
+    end
   end
 end
