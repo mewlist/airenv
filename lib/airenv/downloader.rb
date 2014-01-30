@@ -12,7 +12,7 @@ class Airenv::Downloader
   end
 
   def start
-    FileUtils.mkdir_p temporary_sdk_file_directory
+    FileUtils.mkdir_p Settings.temporary_sdk_file_directory
 
     bar = nil
 
@@ -38,10 +38,7 @@ class Airenv::Downloader
   end
 
   def temporary_sdk_file_path
-    File.expand_path("#{temporary_sdk_file_directory}/#{@simple_name}.zip")
+    Settings.temporary_sdk_file_path(@simple_name)
   end
 
-  def temporary_sdk_file_directory
-    File.expand_path("~/.airsdk/tmp/sdks/")
-  end
 end
