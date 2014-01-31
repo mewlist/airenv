@@ -80,4 +80,9 @@ class Airenv::Sdk
   def current_sdk_symlink_path
     "#{Settings.sdks_directory}/current"
   end
+
+  def use
+    system("rm #{current_sdk_symlink_path}") if archive_extracted?
+    system("ln -s #{extracted_dir} #{current_sdk_symlink_path}")
+  end
 end
