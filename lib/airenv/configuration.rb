@@ -6,8 +6,8 @@ module Airenv
       File.expand_path("#{temporary_sdk_file_directory}/#{simple_name}.tbz2")
     end
 
-    def temporary_sdk_file_extracted_directory(simple_name)
-      File.expand_path("#{temporary_sdk_file_directory}/#{simple_name}")
+    def temporary_sdk_file_extracted_directory
+      File.expand_path("#{temporary_sdk_file_directory}/temporary_sdk")
     end
 
     def temporary_sdk_file_directory

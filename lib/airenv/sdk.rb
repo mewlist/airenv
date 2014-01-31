@@ -41,7 +41,8 @@ class Airenv::Sdk
     download
     puts "Archive extracting..."
     extract_archive
-    parse_sdk_description
+    parse_sdk_description_from_temporary_sdk
+    move_to_sdks_directory
   end
 
   def download
@@ -57,9 +58,13 @@ class Airenv::Sdk
     "#{Settings.sdks_directory}/#{package_name}"
   end
 
+  def temporary_extracted_dir
+    "#{Settings.temporary_sdk_file_extracted_directory}"
+  end
+
   def extract_archive
-    FileUtils.mkdir_p(extracted_dir)
-    system("tar zxf #{Shellwords.escape(Settings.temporary_sdk_file_path(simple_name))} -C #{extracted_dir}")
+    FileUtils.mkdir_p(temporary_extracted_dir)
+    system("tar zxf #{Shellwords.escape(Settings.temporary_sdk_file_path(simple_name))} -C #{temporary_extracted_dir}")
   end
 
   def sdk_description_xml_path
@@ -78,8 +83,24 @@ class Airenv::Sdk
     self.description.load(sdk_description_xml)
   end
 
+  def temporary_sdk_description_xml_path
+    "#{temporary_extracted_dir}/air-sdk-description.xml"
+  end
+
+  def temporary_sdk_description_xml
+    File.read("#{temporary_sdk_description_xml_path}")
+  end
+
+  def parse_sdk_description_from_temporary_sdk
+    self.description.load(temporary_sdk_description_xml)
+  end
+
+  def move_to_sdks_directory
+    File.rename(temporary_extracted_dir, extracted_dir)
+  end
+
   def use
-    system("rm #{current_sdk_symlink_path}") if archive_extracted?
+    system("rm #{Shellwords.escape(Settings.current_sdk_symlink_path)}") if archive_extracted?
     system("ln -s #{Shellwords.escape(extracted_dir)} #{Shellwords.escape(Settings.current_sdk_symlink_path)}")
   end
 end
