@@ -17,6 +17,10 @@ module Airenv
     def sdks_directory
       File.expand_path("#{envdir}/sdks/")
     end
+
+    def current_sdk_symlink_path
+      "#{sdks_directory}/current"
+    end
   end
 end
 
@@ -24,6 +28,7 @@ def default_config_string
   <<EOS
 Settings = Configuration.for('config') {
   envdir '~/.airenv'
+  flash_builder_airsdk_path '/Applications/Adobe Flash Builder 4.7/eclipse/plugins/com.adobe.flash.compiler_4.7.0.349722/AIRSDK'
 }
 EOS
 end

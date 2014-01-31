@@ -3,6 +3,7 @@ require 'progressbar'
 require 'archive/tar/minitar'
 require 'fileutils'
 require 'bzip2'
+require 'shellwords'
 
 class Airenv::Sdk
 
@@ -58,7 +59,7 @@ class Airenv::Sdk
 
   def extract_archive
     FileUtils.mkdir_p(extracted_dir)
-    system("tar zxf #{Settings.temporary_sdk_file_path(simple_name)} -C #{extracted_dir}")
+    system("tar zxf #{Shellwords.escape(Settings.temporary_sdk_file_path(simple_name))} -C #{extracted_dir}")
   end
 
   def sdk_description_xml_path
@@ -77,12 +78,8 @@ class Airenv::Sdk
     self.description.load(sdk_description_xml)
   end
 
-  def current_sdk_symlink_path
-    "#{Settings.sdks_directory}/current"
-  end
-
   def use
     system("rm #{current_sdk_symlink_path}") if archive_extracted?
-    system("ln -s #{extracted_dir} #{current_sdk_symlink_path}")
+    system("ln -s #{Shellwords.escape(extracted_dir)} #{Shellwords.escape(Settings.current_sdk_symlink_path)}")
   end
 end
