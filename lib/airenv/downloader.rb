@@ -41,4 +41,8 @@ class Airenv::Downloader
     Settings.temporary_sdk_file_path(@simple_name)
   end
 
+  def archive_exists?
+    File.exists?(temporary_sdk_file_path)
+  end
+
 end

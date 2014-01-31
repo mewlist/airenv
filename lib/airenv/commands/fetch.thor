@@ -6,7 +6,8 @@ module Airenv
           desc 'fetch', 'Fetches a AIR SDK of specified version'
           def fetch(version_id)
             sdk = Airenv::Sdk.new version_id
-            sdk.download
+            sdk.fetch
+            puts "#{sdk.description.name} fetched."
           end
         end
       end

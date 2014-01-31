@@ -3,11 +3,19 @@ require 'configuration'
 module Airenv
   module Configuration
     def temporary_sdk_file_path(simple_name)
-      File.expand_path("#{temporary_sdk_file_directory}/#{simple_name}.zip")
+      File.expand_path("#{temporary_sdk_file_directory}/#{simple_name}.tbz2")
+    end
+
+    def temporary_sdk_file_extracted_directory(simple_name)
+      File.expand_path("#{temporary_sdk_file_directory}/#{simple_name}")
     end
 
     def temporary_sdk_file_directory
       File.expand_path("#{envdir}/tmp/sdks/")
+    end
+
+    def sdks_directory
+      File.expand_path("#{envdir}/sdks/")
     end
   end
 end
