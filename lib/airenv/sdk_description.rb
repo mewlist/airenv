@@ -2,6 +2,8 @@ require 'rexml/document'
 require 'digest/md5'
 
 class Airenv::SdkDescription
+  include Comparable
+
   attr_accessor :name
   attr_accessor :version
   attr_accessor :build
@@ -32,12 +34,21 @@ class Airenv::SdkDescription
     Digest::MD5.digest(id)
   end
 
+  def <=>(other)
+    result = self.version <=> other.version
+    if result == 0
+      self.build <=> other.build
+    else
+      result
+    end
+  end
+
   class << self
     def normalize_version_id(version_id)
       if simple_version?(version_id)
         installed_sdks.select {|sdk|
           sdk.simple_version == version_id
-        }.first.description.id
+        }.sort.last.description.id
       else
         version_id
       end

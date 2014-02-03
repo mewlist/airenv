@@ -7,6 +7,8 @@ require 'shellwords'
 
 class Airenv::Sdk
 
+  include Comparable
+
   attr_accessor :description
 
   def initialize(version_id=nil)
@@ -107,5 +109,9 @@ class Airenv::Sdk
   def use
     File.delete(Settings.current_sdk_symlink_path) if current_sdk_symlink_exists?
     File.symlink(extracted_dir, Settings.current_sdk_symlink_path)
+  end
+
+  def <=>(other)
+    self.description <=> other.description
   end
 end

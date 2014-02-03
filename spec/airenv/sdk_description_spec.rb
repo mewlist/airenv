@@ -57,4 +57,124 @@ describe Airenv::SdkDescription do
 
     its(:id) { should == "4.5.6-b3141" }
   end
+
+  describe '#<=>' do
+    let(:left) { Airenv::SdkDescription.new }
+    let(:right) { Airenv::SdkDescription.new }
+
+    context 'when right version is bigger' do
+      before do
+        left.version = "4.5.6"
+        left.build = 4567
+
+        right.version = "4.5.8"
+        right.build = 1234
+      end
+
+      subject { left <=> right }
+      it { should == -1 }
+    end
+
+    context 'when left version is bigger' do
+      before do
+        left.version = "4.5.8"
+        left.build = 4567
+
+        right.version = "4.5.4"
+        right.build = 1234
+      end
+
+      subject { left <=> right }
+      it { should == 1 }
+    end
+
+    context 'when left build version is bigger' do
+      before do
+        left.version = "4.5.8"
+        left.build = 1235
+
+        right.version = "4.5.8"
+        right.build = 1234
+      end
+
+      subject { left <=> right }
+      it { should == 1 }
+    end
+
+    context 'when right build version is bigger' do
+      before do
+        left.version = "4.5.8"
+        left.build = 1235
+
+        right.version = "4.5.8"
+        right.build = 1236
+      end
+
+      subject { left <=> right }
+      it { should == -1 }
+    end
+
+    context 'when version and build version is same' do
+      before do
+        left.version = "4.5.8"
+        left.build = 1235
+
+        right.version = "4.5.8"
+        right.build = 1235
+      end
+
+      subject { left <=> right }
+      it { should == 0 }
+    end
+  end
+
+  describe '.usable?' do
+    subject { Airenv::SdkDescription.usable?(version_id) }
+    before do
+      Airenv::SdkDescription.stub(:installed_versions).and_return(['1.2.3-b456', '1.2.4-b123'])
+    end
+    context do
+      let(:version_id) { '1.2' }
+      it { should be_true }
+    end
+    context do
+      let(:version_id) { '1.3' }
+      it { should be_false }
+    end
+    context do
+      let(:version_id) { '1.2.4-b123' }
+      it { should be_true }
+    end
+    context do
+      let(:version_id) { '1.2.2-b987' }
+      it { should be_false }
+    end
+  end
+
+  describe '.normalize_version_id' do
+    subject { Airenv::SdkDescription.normalize_version_id(version_id) }
+    before do
+      Airenv::SdkDescription.stub(:installed_versions).and_return(['1.2.3-b456', '1.2.4-b123'])
+    end
+    context do
+      let(:version_id) { '1.2' }
+      it { should == '1.2.4-b123' }
+    end
+    context do
+      let(:version_id) { '1.2.3-b456' }
+      it { should == '1.2.3-b456' }
+    end
+  end
+
+  describe '.simple_version?' do
+    subject { Airenv::SdkDescription.simple_version?(version_id) }
+    context do
+      let(:version_id) { '1.2' }
+      it { should be_true }
+    end
+    context do
+      let(:version_id) { '1.2.2-b987' }
+      it { should be_false }
+    end
+  end
 end
