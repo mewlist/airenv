@@ -13,8 +13,11 @@ module Airenv
             puts "Do you permit to do it? [yN]"
             answer = STDIN.gets.chomp
             if ['y', 'Y'].include? answer
-              system("rm #{Shellwords.escape(Settings.flash_builder_airsdk_path)}")
-              system("ln -s #{Shellwords.escape(Settings.current_sdk_symlink_path)} #{Shellwords.escape(Settings.flash_builder_airsdk_path)}")
+              if File.symlink?(Settings.flash_builder_airsdk_path)
+                File.delete(Settings.flash_builder_airsdk_path)
+              end
+              File.symlink(Settings.current_sdk_symlink_path, Settings.flash_builder_airsdk_path)
+              puts "Airenv is initialized for your environment."
             else
               puts "All are cancelled. Did nothing."
             end

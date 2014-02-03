@@ -7,12 +7,9 @@ module Airenv
         thor.class_eval do
           desc 'list', 'List fetched SDKs up'
           def list
-            Dir.glob("#{Settings.sdks_directory}/*") do |f|
-              basename = Pathname.new(f).basename.to_s
-              unless basename  == 'current'
-                sdk = Airenv::Sdk.new(basename.to_s.gsub("AIRSDK_", ''))
-                puts "#{sdk.description.version} (#{sdk.simple_version})"
-              end
+            Airenv::SdkDescription.installed_versions.each do |version_id|
+              sdk = Airenv::Sdk.new(version_id)
+              puts "#{sdk.description.version} (#{sdk.simple_version})"
             end
           end
         end

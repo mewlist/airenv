@@ -96,11 +96,16 @@ class Airenv::Sdk
   end
 
   def move_to_sdks_directory
+    FileUtils.mkdir_p(Settings.sdks_directory)
     File.rename(temporary_extracted_dir, extracted_dir)
   end
 
+  def current_sdk_symlink_exists?
+    File.exists?(Settings.current_sdk_symlink_path)
+  end
+
   def use
-    system("rm #{Shellwords.escape(Settings.current_sdk_symlink_path)}") if archive_extracted?
-    system("ln -s #{Shellwords.escape(extracted_dir)} #{Shellwords.escape(Settings.current_sdk_symlink_path)}")
+    File.delete(Settings.current_sdk_symlink_path) if current_sdk_symlink_exists?
+    File.symlink(extracted_dir, Settings.current_sdk_symlink_path)
   end
 end
