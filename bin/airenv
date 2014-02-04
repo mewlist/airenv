@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+libdir = File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH.unshift(libdir)
+require 'airenv'
+
+Airenv::CLI.load_thorfiles(File.join(libdir, 'airenv', 'commands'))
+Airenv::CLI.start(ARGV)
