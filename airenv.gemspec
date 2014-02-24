@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Airenv::VERSION
   spec.authors       = ["Toshiyuki Hirooka", "Hidenori Doi"]
   spec.email         = ["toshi.hirooka@gmail.com", "mewlist@mewlist.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Automatically download, archive, switch AIR SDK for flash builder on mac.}
+  spec.summary       = %q{Adobe AIR SDK package manager}
   spec.homepage      = ""
   spec.license       = "MIT"
 
