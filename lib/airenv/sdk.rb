@@ -98,6 +98,7 @@ class Airenv::Sdk
   end
 
   def move_to_sdks_directory
+    FileUtils.rm_r(extracted_dir)
     FileUtils.mkdir_p(Settings.sdks_directory)
     File.rename(temporary_extracted_dir, extracted_dir)
   end
