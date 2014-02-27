@@ -107,9 +107,19 @@ class Airenv::Sdk
     File.exists?(Settings.current_sdk_symlink_path)
   end
 
+  def current_sdk_description
+    description = Airenv::SdkDescription.new
+    description.load File.read("#{Settings.current_sdk_symlink_path}/air-sdk-description.xml")
+    description
+  end
+
   def use
     File.delete(Settings.current_sdk_symlink_path) if current_sdk_symlink_exists?
     File.symlink(extracted_dir, Settings.current_sdk_symlink_path)
+  end
+
+  def current?
+    description.id == current_sdk_description.id
   end
 
   def <=>(other)
