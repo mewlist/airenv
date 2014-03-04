@@ -9,7 +9,8 @@ module Airenv
           def list
             Airenv::SdkDescription.installed_versions.each do |version_id|
               sdk = Airenv::Sdk.new(version_id)
-              puts "#{sdk.description.version} (#{sdk.simple_version})"
+              current_mark = if sdk.current? then "*" else " " end
+              puts "#{current_mark} #{sdk.description.id} (#{sdk.simple_version})"
             end
           end
         end
