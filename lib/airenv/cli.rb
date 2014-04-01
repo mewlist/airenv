@@ -9,10 +9,10 @@ class Airenv::CLI < Thor
   end
 
   def self.load_thorfiles(dir)
-    thor_files = Dir.glob('**/*.thor').delete_if { |x| not File.file?(x) }
+    thor_files = Dir.glob(File.join("#{dir}", "**/*.thor")).delete_if { |x| not File.file?(x) }
     thor_files.each do |f|
       load f
-      include f.to_s.gsub('lib/', '').gsub('.thor', '').camelize.constantize
+      include "airenv/commands#{File.expand_path(f.to_s).gsub(File.expand_path(dir), '')}".gsub('.thor', '').camelize.constantize
     end
   end
 
